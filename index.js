@@ -1,127 +1,190 @@
-let colon3 = 0
-let clickStrength = 1
-let autoStrength = 0
-
-let upgrades = {
-
-click2:{cost:25},
-auto1:{cost:50},
-click5:{cost:200},
-auto5:{cost:500},
-mega:{cost:5000},
-
-double:{cost:10000},
-
-factory:{cost:20000},
-planet:{cost:150000},
-universe:{cost:500000}
-
-}
+let colon3=0
+let clickStrength=1
+let autoStrength=0
 
 const counter=document.getElementById("counter")
-const colonBtn=document.getElementById("colon3")
+const perSec=document.getElementById("perSec")
+const perClick=document.getElementById("perClick")
 
-colonBtn.onclick=function(){
+/* CLICK */
+document.getElementById("colon3").onclick=()=>{
 colon3+=clickStrength
+unlock("click1")
 update()
 }
 
-function update(){
+/* SHOP ITEMS */
+let shopItems=[
 
-counter.innerText=":3 : "+format(colon3)
+{name:"+1 click strength",cost:10,type:"click",value:1,owned:0},
+{name:"+5 auto",cost:50,type:"auto",value:5,owned:0},
 
-if(colon3>=1000000000000){
-endGame()
+{name:"+5 click",cost:200,type:"click",value:5,owned:0},
+{name:"+25 auto",cost:500,type:"auto",value:25,owned:0},
+
+{name:"+20 click",cost:2000,type:"click",value:20,owned:0},
+{name:"+100 auto",cost:5000,type:"auto",value:100,owned:0},
+
+{name:"+100 click",cost:20000,type:"click",value:100,owned:0},
+{name:"+500 auto",cost:50000,type:"auto",value:500,owned:0},
+
+{name:"SUPER click +1000",cost:150000,type:"click",value:1000,owned:0},
+{name:"MEGA auto +2000",cost:300000,type:"auto",value:2000,owned:0}
+
+]
+
+/* RENDER SHOP */
+const shop=document.getElementById("shop")
+
+function renderShop(){
+shop.innerHTML=""
+shopItems.forEach((item,i)=>{
+let div=document.createElement("div")
+div.className="item"
+div.innerHTML=`
+${item.name}<br>
+Cost: ${item.cost}<br>
+Owned: ${item.owned}
+`
+div.onclick=()=>buy(i)
+shop.appendChild(div)
+})
 }
 
+/* BUY */
+function buy(i){
+let item=shopItems[i]
+if(colon3<item.cost) return
+
+colon3-=item.cost
+item.owned++
+
+if(item.type=="click") clickStrength+=item.value
+if(item.type=="auto") {
+autoStrength+=item.value
+unlock("auto1")
 }
 
-function buyUpgrade(type){
+item.cost=Math.floor(item.cost*1.5)
 
-let up=upgrades[type]
-if(colon3<up.cost) return
-
-colon3-=up.cost
-
-if(type=="click2"){
-clickStrength*=2
-up.cost*=3
-document.getElementById("cost_click2").innerText=Math.floor(up.cost)
-}
-
-if(type=="auto1"){
-autoStrength+=1
-up.cost*=1.7
-document.getElementById("cost_auto1").innerText=Math.floor(up.cost)
-}
-
-if(type=="click5"){
-clickStrength*=5
-up.cost*=4
-document.getElementById("cost_click5").innerText=Math.floor(up.cost)
-}
-
-if(type=="auto5"){
-autoStrength+=5
-up.cost*=3
-document.getElementById("cost_auto5").innerText=Math.floor(up.cost)
-}
-
-if(type=="mega"){
-clickStrength*=10
-autoStrength+=10
-up.cost*=6
-document.getElementById("cost_mega").innerText=Math.floor(up.cost)
-}
-
-if(type=="double"){
-colon3*=2
-}
-
-if(type=="factory"){
-autoStrength+=50
-up.cost*=3
-document.getElementById("cost_factory").innerText=Math.floor(up.cost)
-}
-
-if(type=="planet"){
-autoStrength+=500
-up.cost*=3
-document.getElementById("cost_planet").innerText=Math.floor(up.cost)
-}
-
-if(type=="universe"){
-clickStrength*=100
-autoStrength+=1000
-up.cost*=4
-document.getElementById("cost_universe").innerText=Math.floor(up.cost)
-}
-
+renderShop()
 update()
 }
 
-setInterval(function(){
+/* LOOP */
+setInterval(()=>{
 colon3+=autoStrength
 update()
 },1000)
 
-function format(num){
-return Math.floor(num).toLocaleString()
+/* UPDATE */
+function update(){
+counter.innerText=":3 : "+format(colon3)
+perSec.innerText=autoStrength
+perClick.innerText=clickStrength
+
+checkAchievements()
+if(colon3>=1e12) win()
 }
 
-function endGame(){
-document.body.classList.add("end")
+/* FORMAT */
+function format(n){
+return Math.floor(n).toLocaleString()
 }
 
-document.getElementById("hateBtn").onclick=function(){
-
-let vid=document.getElementById("rageVid")
-
-vid.style.display="block"
-vid.play()
-
-if(vid.requestFullscreen){
-vid.requestFullscreen()
+/* MENU */
+document.getElementById("menuBtn").onclick=()=>{
+let d=document.getElementById("dropdown")
+d.style.display=d.style.display=="block"?"none":"block"
 }
 
+/* ACHIEVEMENTS */
+let achievements={
+
+click1:{name:"One of Many",desc:"ur first ever click",got:false},
+thousand:{name:"Still More to Go",desc:"reach 1,000 :3s",got:false},
+million:{name:"My Fingers Are Getting Tired",desc:"reach 1m :3s",got:false},
+auto1:{name:"A Handful of Help",desc:"get auto income",got:false},
+
+custom1:{name:"You Actually Like This Game?",desc:"keep playing...",got:false},
+rich:{name:"Getting Serious",desc:"reach 100k :3s",got:false},
+insane:{name:"This Is Out of Hand",desc:"reach 1b :3s",got:false},
 }
+
+function unlock(id){
+if(!achievements[id].got){
+achievements[id].got=true
+notify(achievements[id].name)
+renderAchievements()
+}
+}
+
+function checkAchievements(){
+if(colon3>=1000) unlock("thousand")
+if(colon3>=1e6) unlock("million")
+if(colon3>=100000) unlock("rich")
+if(colon3>=1e9) unlock("insane")
+}
+
+/* RENDER ACH */
+function renderAchievements(){
+let list=document.getElementById("achList")
+list.innerHTML=""
+
+let first=true
+
+for(let key in achievements){
+
+if(!first){
+let divider=document.createElement("div")
+divider.className="divider"
+divider.innerText="-------"
+list.appendChild(divider)
+}
+first=false
+
+let a=achievements[key]
+
+let div=document.createElement("div")
+div.className="ach"
+
+if(a.got){
+div.innerHTML=`<b>${a.name}</b><br>${a.desc}`
+}else{
+div.classList.add("locked")
+div.innerHTML=`<b>???</b><br>?????`
+}
+
+list.appendChild(div)
+}
+}
+
+/* NOTIFICATION */
+function notify(text){
+let n=document.createElement("div")
+n.innerText="Achievement: "+text
+document.getElementById("notif").appendChild(n)
+
+setTimeout(()=>n.remove(),3000)
+}
+
+/* BUTTONS */
+document.getElementById("hateBtn").onclick=()=>{
+let v=document.getElementById("rageVid")
+v.style.display="block"
+v.play()
+v.requestFullscreen?.()
+}
+
+/* WIN */
+function win(){
+let v=document.getElementById("winVid")
+v.style.display="block"
+v.play()
+v.requestFullscreen?.()
+}
+
+/* INIT */
+renderShop()
+renderAchievements()
+update()

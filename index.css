@@ -1,43 +1,50 @@
 body{
 margin:0;
-overflow:hidden;
-background-image:url("bg.jpeg");
+background:url("bg.jpeg");
 background-size:cover;
-background-position:center;
 font-family:Playwrite;
 color:white;
-text-align:center;
+overflow:hidden;
 }
 
 #counter{
+text-align:center;
 font-size:40px;
-margin-top:40px;
+margin-top:20px;
+}
+
+#stats{
+text-align:center;
+margin-top:10px;
+font-size:18px;
 }
 
 #colon3{
-width:220px;
-margin-top:60px;
+display:block;
+margin:40px auto;
+width:200px;
 cursor:pointer;
 animation:spin 4s linear infinite;
 }
 
 @keyframes spin{
-from{transform:rotate(0deg);}
+from{transform:rotate(0);}
 to{transform:rotate(360deg);}
 }
 
+/* SHOP */
 #shop{
 position:fixed;
 right:0;
 top:0;
-width:230px;
+width:250px;
 height:100%;
 background:purple;
 overflow-y:auto;
 }
 
 .item{
-padding:15px;
+padding:12px;
 border-bottom:1px solid rgba(255,255,255,0.3);
 cursor:pointer;
 }
@@ -46,14 +53,91 @@ cursor:pointer;
 background:rgba(255,255,255,0.2);
 }
 
-#hateBtn{
-margin-top:20px;
-padding:10px 20px;
-font-size:16px;
+/* MENU */
+#menuBtn{
+position:fixed;
+top:10px;
+left:10px;
+background:purple;
+color:white;
+border:none;
+padding:10px;
 cursor:pointer;
+z-index:5;
 }
 
-#rageVid{
+#dropdown{
+position:fixed;
+top:50px;
+left:10px;
+width:260px;
+background:linear-gradient(180deg, #4b0082, #800080);
+border:2px solid rgba(255,255,255,0.3);
+border-radius:12px;
+display:none;
+padding:12px;
+max-height:400px;
+overflow:auto;
+box-shadow:0 0 15px rgba(0,0,0,0.5);
+}
+
+#dropdown h3{
+text-align:center;
+margin-top:0;
+margin-bottom:10px;
+font-size:20px;
+}
+
+.ach{
+padding:8px 5px;
+}
+
+.ach.locked{
+opacity:0.6;
+font-style:italic;
+}
+
+.divider{
+text-align:center;
+margin:5px 0;
+opacity:0.5;
+}
+
+/* NOTIFICATIONS */
+#notif{
+position:fixed;
+top:10px;
+left:80px;
+}
+
+/* BOTTOM */
+#bottomBar{
+position:fixed;
+bottom:0;
+width:100%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:10px;
+}
+
+#version{
+text-align:center;
+width:100%;
+font-size:20px;
+}
+
+#hateBtn{
+background:linear-gradient(45deg, purple, magenta);
+border:none;
+padding:10px 20px;
+color:white;
+cursor:pointer;
+border-radius:10px;
+}
+
+/* VIDEOS */
+video{
 position:fixed;
 top:0;
 left:0;
@@ -62,21 +146,4 @@ height:100vh;
 display:none;
 object-fit:cover;
 z-index:999;
-}
-
-.end #shop{display:none;}
-.end #counter{display:none;}
-
-.end #colon3{
-position:fixed;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-width:100vw;
-animation:spinFast 0.4s linear infinite;
-}
-
-@keyframes spinFast{
-from{transform:translate(-50%,-50%) rotate(0deg);}
-to{transform:translate(-50%,-50%) rotate(360deg);}
 }

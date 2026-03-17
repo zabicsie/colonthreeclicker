@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>:3 Clicker</title>
 
-<link rel="icon" type="image/jpeg" href="favicon.jpeg">
+<link rel="icon" href="favicon.jpeg">
 <link rel="stylesheet" href="index.css">
 
 <style>
@@ -18,66 +18,42 @@ src:url("PlaywritePL-Thin.ttf");
 
 <body>
 
+<!-- TOP LEFT MENU -->
+<button id="menuBtn">☰</button>
+
+<div id="dropdown">
+<h3>Achievements</h3>
+<div id="achList"></div>
+</div>
+
+<!-- NOTIFICATIONS -->
+<div id="notif"></div>
+
 <div id="game">
 
 <div id="counter">:3 : 0</div>
 
+<div id="stats">
+<div>:3/sec: <span id="perSec">0</span></div>
+<div>:3/click: <span id="perClick">1</span></div>
+</div>
+
 <img id="colon3" src="colon3.png">
 
+</div>
+
+<!-- SHOP -->
+<div id="shop"></div>
+
+<!-- BOTTOM UI -->
+<div id="bottomBar">
 <button id="hateBtn">i dont like this game</button>
-
-<div id="shop">
-
-<div class="item" onclick="buyUpgrade('click2')">
-:3 x2<br>
-Cost: <span id="cost_click2">25</span>
+<div id="version">:3 Clicker v3 REWORK BUILD</div>
 </div>
 
-<div class="item" onclick="buyUpgrade('auto1')">
-:3 auto click +1<br>
-Cost: <span id="cost_auto1">50</span>
-</div>
-
-<div class="item" onclick="buyUpgrade('click5')">
-:3 x5<br>
-Cost: <span id="cost_click5">200</span>
-</div>
-
-<div class="item" onclick="buyUpgrade('auto5')">
-:3 auto click +5<br>
-Cost: <span id="cost_auto5">500</span>
-</div>
-
-<div class="item" onclick="buyUpgrade('mega')">
-:3 MEGA x10<br>
-Cost: <span id="cost_mega">5000</span>
-</div>
-
-<div class="item" onclick="buyUpgrade('double')">
-:3 double<br>
-Cost: <span id="cost_double">10000</span>
-</div>
-
-<div class="item" onclick="buyUpgrade('factory')">
-:3 factory +50/sec<br>
-Cost: <span id="cost_factory">20000</span>
-</div>
-
-<div class="item" onclick="buyUpgrade('planet')">
-:3 planet +500/sec<br>
-Cost: <span id="cost_planet">150000</span>
-</div>
-
-<div class="item" onclick="buyUpgrade('universe')">
-:3 universe x100<br>
-Cost: <span id="cost_universe">500000</span>
-</div>
-
-</div>
-
-</div>
-
+<!-- VIDEOS -->
 <video id="rageVid" src="vid.mp4"></video>
+<video id="winVid" src="win.mp4"></video>
 
 <script src="index.js"></script>
 
