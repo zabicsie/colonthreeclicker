@@ -7,38 +7,20 @@ color:white;
 overflow:hidden;
 }
 
-/* AUTH */
-#authScreen{
-position:fixed;
-width:100%;
-height:100%;
-background:linear-gradient(135deg,purple,black);
-display:flex;
-justify-content:center;
-align-items:center;
-z-index:1000;
-}
-
-.authBox{
-background:rgba(0,0,0,0.7);
-padding:30px;
-border-radius:15px;
+/* COUNTER + STATS */
+#counter{
 text-align:center;
+font-size:40px;
+margin-top:20px;
 }
 
-.authBox input{
-display:block;
-margin:10px auto;
-padding:10px;
-border-radius:8px;
-border:none;
+#stats{
+text-align:center;
+margin-top:10px;
+font-size:18px;
 }
 
-/* UI */
-#counter{text-align:center;font-size:40px;margin-top:20px;}
-#userDisplay{text-align:center;}
-#stats{text-align:center;}
-
+/* MAIN BUTTON */
 #colon3{
 display:block;
 margin:40px auto;
@@ -60,75 +42,117 @@ top:0;
 width:250px;
 height:100%;
 background:purple;
-overflow:auto;
+overflow-y:auto;
 }
 
 .item{
-padding:10px;
+padding:12px;
 border-bottom:1px solid rgba(255,255,255,0.3);
 cursor:pointer;
 }
 
-/* MENU */
-#menuBtn,#leaderBtn{
+.item:hover{
+background:rgba(255,255,255,0.2);
+}
+
+/* MENU BUTTON */
+#menuBtn{
 position:fixed;
 top:10px;
+left:10px;
 background:purple;
-border:none;
 color:white;
+border:none;
 padding:10px;
 cursor:pointer;
+z-index:5;
+border-radius:8px;
 }
-#leaderBtn{left:60px;}
 
+/* ACHIEVEMENTS MENU */
 #dropdown{
 position:fixed;
 top:50px;
 left:10px;
 width:260px;
-background:linear-gradient(#4b0082,#800080);
-padding:10px;
+background:linear-gradient(180deg, #4b0082, #800080);
+border:2px solid rgba(255,255,255,0.3);
 border-radius:12px;
 display:none;
+padding:12px;
+max-height:400px;
+overflow:auto;
+box-shadow:0 0 15px rgba(0,0,0,0.5);
 }
 
-.divider{text-align:center;opacity:0.5;}
-.ach.locked{opacity:0.5;font-style:italic;}
+#dropdown h3{
+text-align:center;
+margin-top:0;
+margin-bottom:10px;
+font-size:20px;
+}
 
-#leaderboard{
+.ach{
+padding:8px 5px;
+}
+
+.ach.locked{
+opacity:0.6;
+font-style:italic;
+}
+
+.divider{
+text-align:center;
+margin:5px 0;
+opacity:0.5;
+}
+
+/* NOTIFICATIONS */
+#notif{
 position:fixed;
-top:50px;
-left:60px;
-width:260px;
-background:linear-gradient(#4b0082,#800080);
-padding:10px;
-border-radius:12px;
-display:none;
+top:10px;
+left:80px;
 }
 
-/* BOTTOM */
+/* BOTTOM BAR */
 #bottomBar{
 position:fixed;
 bottom:0;
 width:100%;
 display:flex;
 justify-content:space-between;
+align-items:center;
 padding:10px;
 }
 
+#version{
+text-align:center;
+width:100%;
+font-size:20px;
+}
+
+/* RAGE BUTTON */
 #hateBtn{
-background:linear-gradient(45deg,purple,magenta);
+background:linear-gradient(45deg, purple, magenta);
 border:none;
-padding:10px;
-border-radius:10px;
+padding:10px 20px;
 color:white;
 cursor:pointer;
+border-radius:10px;
+transition:0.2s;
 }
 
+#hateBtn:hover{
+transform:scale(1.1);
+}
+
+/* VIDEOS */
 video{
 position:fixed;
-width:100%;
-height:100%;
+top:0;
+left:0;
+width:100vw;
+height:100vh;
 display:none;
 object-fit:cover;
 z-index:999;

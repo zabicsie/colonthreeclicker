@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>:3 Clicker</title>
 
 <link rel="icon" href="favicon.jpeg">
 <link rel="stylesheet" href="index.css">
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <style>
 @font-face{
@@ -20,61 +18,39 @@ src:url("PlaywritePL-Thin.ttf");
 
 <body>
 
-<!-- AUTH -->
-<div id="authScreen">
-<div class="authBox">
-<h2>:3 Clicker Login</h2>
-
-<input id="userInput" placeholder="Username">
-<input id="emailInput" placeholder="Email">
-<input id="passInput" type="password" placeholder="Password">
-
-<button onclick="signup()">Sign Up</button>
-<button onclick="login()">Login</button>
-
-<div id="authMsg"></div>
-</div>
-</div>
-
-<!-- MENU -->
 <button id="menuBtn">☰</button>
-<button id="leaderBtn">🏆</button>
 
 <div id="dropdown">
 <h3>Achievements</h3>
 <div id="achList"></div>
 </div>
 
-<div id="leaderboard">
-<h3>Leaderboard</h3>
-<div id="playerRank"></div>
-<div id="leaderList"></div>
-</div>
-
 <div id="notif"></div>
 
 <div id="game">
+
 <div id="counter">:3 : 0</div>
-<div id="userDisplay"></div>
 
 <div id="stats">
 <div>:3/sec: <span id="perSec">0</span></div>
 <div>:3/click: <span id="perClick">1</span></div>
 </div>
 
-<img id="colon3" src="colon3.jpeg">
+<img id="colon3" src="colon3.png">
+
 </div>
 
 <div id="shop"></div>
 
 <div id="bottomBar">
 <button id="hateBtn">i dont like this game</button>
-<div id="version">:3 Clicker v3.5 REWORK BUILD</div>
+<div id="version">:3 Clicker v3 REWORK BUILD (ROLLBACK)</div>
 </div>
 
 <video id="rageVid" src="vid.mp4"></video>
 <video id="winVid" src="win.mp4"></video>
 
 <script src="index.js"></script>
+
 </body>
 </html>

@@ -1,126 +1,114 @@
-/* SUPABASE */
-const SUPABASE_URL="https://dssmuruolhtwahgqdldu.supabase.co"
-const SUPABASE_KEY="sb_publishable_QPrude_YYAskoEh3dco1Dw_nYkF8u-_"
-const supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY)
+let colon3=0
+let clickStrength=1
+let autoStrength=0
 
-let colon3=0,clickStrength=1,autoStrength=0,totalEarned=0
-let currentUser=null
+const counter=document.getElementById("counter")
+const perSec=document.getElementById("perSec")
+const perClick=document.getElementById("perClick")
 
-/* DOM */
-let counter=document.getElementById("counter")
-let perSec=document.getElementById("perSec")
-let perClick=document.getElementById("perClick")
-let userInput=document.getElementById("userInput")
-let passInput=document.getElementById("passInput")
-let emailInput=document.getElementById("emailInput")
-let authMsg=document.getElementById("authMsg")
-let authScreen=document.getElementById("authScreen")
-let userDisplay=document.getElementById("userDisplay")
-let shop=document.getElementById("shop")
-let achList=document.getElementById("achList")
-let notif=document.getElementById("notif")
-let menuBtn=document.getElementById("menuBtn")
-let leaderBtn=document.getElementById("leaderBtn")
-let leaderboard=document.getElementById("leaderboard")
-let leaderList=document.getElementById("leaderList")
-let hateBtn=document.getElementById("hateBtn")
-let rageVid=document.getElementById("rageVid")
-let winVid=document.getElementById("winVid")
-let dropdown=document.getElementById("dropdown")
-
-/* LOGIN */
-async function signup(){
-let u=userInput.value,p=passInput.value,e=emailInput.value
-
-let {data}=await supabase.from("users")
-.select("*").or(`username.eq.${u},email.eq.${e}`)
-
-if(data.length){authMsg.innerText="Exists";return}
-
-await supabase.from("users").insert({username:u,email:e,password:p,total:0,current:0})
-authMsg.innerText="Created"
-}
-
-async function login(){
-let u=userInput.value,p=passInput.value
-
-let {data}=await supabase.from("users")
-.select("*").eq("username",u).eq("password",p).single()
-
-if(!data){authMsg.innerText="Invalid";return}
-
-currentUser=data
-colon3=data.current||0
-totalEarned=data.total||0
-
-authScreen.style.display="none"
-userDisplay.innerText="User: "+u
-}
-
-/* CLICK */
-colon3Btn=document.getElementById("colon3")
-colon3Btn.onclick=()=>{
+document.getElementById("colon3").onclick=()=>{
 colon3+=clickStrength
-totalEarned+=clickStrength
 unlock("click1")
+update()
+}
+
+/* SHOP */
+let shopItems=[
+
+{name:"+1 click strength",cost:10,type:"click",value:1,owned:0},
+{name:"+5 auto",cost:50,type:"auto",value:5,owned:0},
+
+{name:"+5 click",cost:200,type:"click",value:5,owned:0},
+{name:"+25 auto",cost:500,type:"auto",value:25,owned:0},
+
+{name:"+20 click",cost:2000,type:"click",value:20,owned:0},
+{name:"+100 auto",cost:5000,type:"auto",value:100,owned:0},
+
+{name:"+100 click",cost:20000,type:"click",value:100,owned:0},
+{name:"+500 auto",cost:50000,type:"auto",value:500,owned:0},
+
+{name:"SUPER click +1000",cost:150000,type:"click",value:1000,owned:0},
+{name:"MEGA auto +2000",cost:300000,type:"auto",value:2000,owned:0}
+
+]
+
+const shop=document.getElementById("shop")
+
+function renderShop(){
+shop.innerHTML=""
+shopItems.forEach((item,i)=>{
+let div=document.createElement("div")
+div.className="item"
+div.innerHTML=`
+${item.name}<br>
+Cost: ${item.cost}<br>
+Owned: ${item.owned}
+`
+div.onclick=()=>buy(i)
+shop.appendChild(div)
+})
+}
+
+function buy(i){
+let item=shopItems[i]
+if(colon3<item.cost) return
+
+colon3-=item.cost
+item.owned++
+
+if(item.type=="click") clickStrength+=item.value
+if(item.type=="auto"){
+autoStrength+=item.value
+unlock("auto1")
+}
+
+item.cost=Math.floor(item.cost*1.5)
+
+renderShop()
 update()
 }
 
 /* LOOP */
 setInterval(()=>{
 colon3+=autoStrength
-totalEarned+=autoStrength
 update()
 },1000)
 
-/* UPDATE */
 function update(){
 counter.innerText=":3 : "+format(colon3)
 perSec.innerText=autoStrength
 perClick.innerText=clickStrength
 
-if(currentUser){
-supabase.from("users").update({
-current:colon3,total:totalEarned
-}).eq("id",currentUser.id)
-}
-
+checkAchievements()
 if(colon3>=1e12) win()
 }
 
-/* SHOP */
-let shopItems=[
-{name:"+1 click",cost:10,type:"click",value:1,owned:0},
-{name:"+5 auto",cost:50,type:"auto",value:5,owned:0}
-]
-
-function renderShop(){
-shop.innerHTML=""
-shopItems.forEach((it,i)=>{
-let d=document.createElement("div")
-d.className="item"
-d.innerHTML=`${it.name}<br>Cost:${it.cost}<br>Owned:${it.owned}`
-d.onclick=()=>buy(i)
-shop.appendChild(d)
-})
+function format(n){
+return Math.floor(n).toLocaleString()
 }
 
-function buy(i){
-let it=shopItems[i]
-if(colon3<it.cost)return
-colon3-=it.cost
-it.owned++
-
-if(it.type=="click")clickStrength+=it.value
-if(it.type=="auto")autoStrength+=it.value
-
-it.cost=Math.floor(it.cost*1.5)
-renderShop()
+/* MENU */
+document.getElementById("menuBtn").onclick=()=>{
+let d=document.getElementById("dropdown")
+d.style.display=d.style.display=="block"?"none":"block"
 }
 
 /* ACHIEVEMENTS */
 let achievements={
-click1:{name:"One of Many",desc:"first click",got:false}
+
+click1:{name:"One of Many",desc:"ur first ever click",got:false},
+thousand:{name:"Still More to Go",desc:"reach 1,000 :3s",got:false},
+million:{name:"My Fingers Are Getting Tired",desc:"reach 1m :3s",got:false},
+auto1:{name:"A Handful of Help",desc:"get auto income",got:false},
+
+custom1:{name:"You Actually Like This Game?",desc:"keep playing...",got:false},
+rich:{name:"Getting Serious",desc:"reach 100k :3s",got:false},
+insane:{name:"This Is Out of Hand",desc:"reach 1b :3s",got:false},
+
+grinder:{name:"Endless Grinder",desc:"reach 10b :3s",got:false},
+god:{name:":3 God",desc:"reach 100b :3s",got:false},
+noLife:{name:"No Life Detected",desc:"reach 1t :3s",got:false}
+
 }
 
 function unlock(id){
@@ -131,77 +119,75 @@ renderAchievements()
 }
 }
 
+function checkAchievements(){
+if(colon3>=1000) unlock("thousand")
+if(colon3>=1e6) unlock("million")
+if(colon3>=100000) unlock("rich")
+if(colon3>=1e9) unlock("insane")
+if(colon3>=1e10) unlock("grinder")
+if(colon3>=1e11) unlock("god")
+if(colon3>=1e12) unlock("noLife")
+}
+
+/* RENDER ACHIEVEMENTS */
 function renderAchievements(){
-achList.innerHTML=""
-for(let k in achievements){
-let a=achievements[k]
-let d=document.createElement("div")
-d.className="ach"
+let list=document.getElementById("achList")
+list.innerHTML=""
 
-if(a.got)d.innerHTML=`<b>${a.name}</b><br>${a.desc}`
-else{d.classList.add("locked");d.innerHTML="???<br>?????"}
+let first=true
 
-achList.appendChild(d)
+for(let key in achievements){
+
+if(!first){
+let divider=document.createElement("div")
+divider.className="divider"
+divider.innerText="-------"
+list.appendChild(divider)
+}
+first=false
+
+let a=achievements[key]
 
 let div=document.createElement("div")
-div.className="divider"
-div.innerText="-------"
-achList.appendChild(div)
+div.className="ach"
+
+if(a.got){
+div.innerHTML=`<b>${a.name}</b><br>${a.desc}`
+}else{
+div.classList.add("locked")
+div.innerHTML=`<b>???</b><br>?????`
+}
+
+list.appendChild(div)
 }
 }
 
-/* NOTIFY */
-function notify(t){
+/* NOTIFICATION */
+function notify(text){
 let n=document.createElement("div")
-n.innerText="Achievement: "+t
-notif.appendChild(n)
+n.innerText="Achievement: "+text
+document.getElementById("notif").appendChild(n)
+
 setTimeout(()=>n.remove(),3000)
 }
 
-/* MENU */
-menuBtn.onclick=()=>dropdown.style.display=
-dropdown.style.display=="block"?"none":"block"
-
-leaderBtn.onclick=()=>{leaderboard.style.display=
-leaderboard.style.display=="block"?"none":"block"
-renderLeaderboard()
+/* BUTTONS */
+document.getElementById("hateBtn").onclick=()=>{
+let v=document.getElementById("rageVid")
+v.style.display="block"
+v.play()
+v.requestFullscreen?.()
 }
 
-/* LEADERBOARD */
-async function renderLeaderboard(){
-let {data}=await supabase.from("users")
-.select("*").order("total",{ascending:false}).limit(10)
-
-leaderList.innerHTML=""
-data.forEach((u,i)=>{
-let d=document.createElement("div")
-d.innerText=`#${i+1} | ${u.username} | ${format(u.total)}`
-leaderList.appendChild(d)
-})
-}
-
-/* VIDEOS */
-hateBtn.onclick=()=>{
-rageVid.style.display="block"
-rageVid.play()
-rageVid.requestFullscreen?.()
-}
-
+/* WIN */
 function win(){
-winVid.style.display="block"
-winVid.play()
-winVid.requestFullscreen?.()
+let v=document.getElementById("winVid")
+v.style.display="block"
+v.play()
+v.requestFullscreen?.()
 }
-
-/* UTIL */
-function format(n){return Math.floor(n).toLocaleString()}
 
 /* INIT */
-if(!currentUser){
-authScreen.style.display="flex"
-}else{
-authScreen.style.display="none"
-userDisplay.innerText="User: "+currentUser.username
-}
 renderShop()
 renderAchievements()
+update()
