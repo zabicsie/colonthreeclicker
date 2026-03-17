@@ -30,10 +30,10 @@ to{transform:rotate(360deg);}
 position:fixed;
 right:0;
 top:0;
-width:220px;
+width:230px;
 height:100%;
 background:purple;
-padding-top:40px;
+overflow-y:auto;
 }
 
 .item{
@@ -46,13 +46,26 @@ cursor:pointer;
 background:rgba(255,255,255,0.2);
 }
 
-.end #shop{
-display:none;
+#hateBtn{
+margin-top:20px;
+padding:10px 20px;
+font-size:16px;
+cursor:pointer;
 }
 
-.end #counter{
+#rageVid{
+position:fixed;
+top:0;
+left:0;
+width:100vw;
+height:100vh;
 display:none;
+object-fit:cover;
+z-index:999;
 }
+
+.end #shop{display:none;}
+.end #counter{display:none;}
 
 .end #colon3{
 position:fixed;

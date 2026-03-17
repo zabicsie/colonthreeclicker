@@ -8,9 +8,9 @@
 <link rel="stylesheet" href="index.css">
 
 <style>
-@font-face {
-    font-family: Playwrite;
-    src: url("PlaywritePL-Thin.ttf");
+@font-face{
+font-family:Playwrite;
+src:url("PlaywritePL-Thin.ttf");
 }
 </style>
 
@@ -23,6 +23,8 @@
 <div id="counter">:3 : 0</div>
 
 <img id="colon3" src="colon3.png">
+
+<button id="hateBtn">i dont like this game</button>
 
 <div id="shop">
 
@@ -51,9 +53,31 @@ Cost: <span id="cost_auto5">500</span>
 Cost: <span id="cost_mega">5000</span>
 </div>
 
+<div class="item" onclick="buyUpgrade('double')">
+:3 double<br>
+Cost: <span id="cost_double">10000</span>
+</div>
+
+<div class="item" onclick="buyUpgrade('factory')">
+:3 factory +50/sec<br>
+Cost: <span id="cost_factory">20000</span>
+</div>
+
+<div class="item" onclick="buyUpgrade('planet')">
+:3 planet +500/sec<br>
+Cost: <span id="cost_planet">150000</span>
+</div>
+
+<div class="item" onclick="buyUpgrade('universe')">
+:3 universe x100<br>
+Cost: <span id="cost_universe">500000</span>
 </div>
 
 </div>
+
+</div>
+
+<video id="rageVid" src="vid.mp4"></video>
 
 <script src="index.js"></script>
 

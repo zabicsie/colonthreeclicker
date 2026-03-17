@@ -3,41 +3,50 @@ let clickStrength = 1
 let autoStrength = 0
 
 let upgrades = {
+
 click2:{cost:25},
 auto1:{cost:50},
 click5:{cost:200},
 auto5:{cost:500},
-mega:{cost:5000}
+mega:{cost:5000},
+
+double:{cost:10000},
+
+factory:{cost:20000},
+planet:{cost:150000},
+universe:{cost:500000}
+
 }
 
-const counter = document.getElementById("counter")
-const colonBtn = document.getElementById("colon3")
+const counter=document.getElementById("counter")
+const colonBtn=document.getElementById("colon3")
 
-colonBtn.onclick = function(){
-colon3 += clickStrength
+colonBtn.onclick=function(){
+colon3+=clickStrength
 update()
 }
 
 function update(){
-counter.innerText=":3 : " + format(colon3)
 
-if(colon3 >= 1000000000000){
+counter.innerText=":3 : "+format(colon3)
+
+if(colon3>=1000000000000){
 endGame()
 }
+
 }
 
 function buyUpgrade(type){
 
-let up = upgrades[type]
+let up=upgrades[type]
+if(colon3<up.cost) return
 
-if(colon3 < up.cost) return
-
-colon3 -= up.cost
+colon3-=up.cost
 
 if(type=="click2"){
 clickStrength*=2
 up.cost*=3
-document.getElementById("cost_click2").innerText=up.cost
+document.getElementById("cost_click2").innerText=Math.floor(up.cost)
 }
 
 if(type=="auto1"){
@@ -49,20 +58,43 @@ document.getElementById("cost_auto1").innerText=Math.floor(up.cost)
 if(type=="click5"){
 clickStrength*=5
 up.cost*=4
-document.getElementById("cost_click5").innerText=up.cost
+document.getElementById("cost_click5").innerText=Math.floor(up.cost)
 }
 
 if(type=="auto5"){
 autoStrength+=5
 up.cost*=3
-document.getElementById("cost_auto5").innerText=up.cost
+document.getElementById("cost_auto5").innerText=Math.floor(up.cost)
 }
 
 if(type=="mega"){
 clickStrength*=10
 autoStrength+=10
 up.cost*=6
-document.getElementById("cost_mega").innerText=up.cost
+document.getElementById("cost_mega").innerText=Math.floor(up.cost)
+}
+
+if(type=="double"){
+colon3*=2
+}
+
+if(type=="factory"){
+autoStrength+=50
+up.cost*=3
+document.getElementById("cost_factory").innerText=Math.floor(up.cost)
+}
+
+if(type=="planet"){
+autoStrength+=500
+up.cost*=3
+document.getElementById("cost_planet").innerText=Math.floor(up.cost)
+}
+
+if(type=="universe"){
+clickStrength*=100
+autoStrength+=1000
+up.cost*=4
+document.getElementById("cost_universe").innerText=Math.floor(up.cost)
 }
 
 update()
@@ -79,4 +111,17 @@ return Math.floor(num).toLocaleString()
 
 function endGame(){
 document.body.classList.add("end")
+}
+
+document.getElementById("hateBtn").onclick=function(){
+
+let vid=document.getElementById("rageVid")
+
+vid.style.display="block"
+vid.play()
+
+if(vid.requestFullscreen){
+vid.requestFullscreen()
+}
+
 }
