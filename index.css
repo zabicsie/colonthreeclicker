@@ -1,1 +1,69 @@
+body{
+margin:0;
+overflow:hidden;
+background-image:url("bg.jpeg");
+background-size:cover;
+background-position:center;
+font-family:Playwrite;
+color:white;
+text-align:center;
+}
 
+#counter{
+font-size:40px;
+margin-top:40px;
+}
+
+#colon3{
+width:220px;
+margin-top:60px;
+cursor:pointer;
+animation:spin 4s linear infinite;
+}
+
+@keyframes spin{
+from{transform:rotate(0deg);}
+to{transform:rotate(360deg);}
+}
+
+#shop{
+position:fixed;
+right:0;
+top:0;
+width:220px;
+height:100%;
+background:purple;
+padding-top:40px;
+}
+
+.item{
+padding:15px;
+border-bottom:1px solid rgba(255,255,255,0.3);
+cursor:pointer;
+}
+
+.item:hover{
+background:rgba(255,255,255,0.2);
+}
+
+.end #shop{
+display:none;
+}
+
+.end #counter{
+display:none;
+}
+
+.end #colon3{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:100vw;
+animation:spinFast 0.4s linear infinite;
+}
+
+@keyframes spinFast{
+from{transform:translate(-50%,-50%) rotate(0deg);}
+to{transform:translate(-50%,-50%) rotate(360deg);}
+}
