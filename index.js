@@ -300,3 +300,50 @@ winVid.requestFullscreen?.()
 renderShop()
 renderAchievements()
 update()
+
+/*************** YOUTUBE SEARCH ***************/
+const ytBtn=document.getElementById("ytBtn")
+const ytSearch=document.getElementById("ytSearch")
+const ytResults=document.getElementById("ytResults")
+const ytPlayer=document.getElementById("ytPlayer")
+
+const API_KEY="AIzaSyB-BGMK2osPDfyIhTJ3sfAQmoISZLoV5cQ"
+
+ytBtn.onclick=searchYT
+
+function searchYT(){
+
+let q=ytSearch.value
+if(!q) return
+
+ytResults.innerHTML="Searching..."
+
+fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=10&q=${encodeURIComponent(q)}&key=${API_KEY}`)
+.then(res=>res.json())
+.then(data=>{
+
+ytResults.innerHTML=""
+
+data.items.forEach(v=>{
+
+let div=document.createElement("div")
+div.className="ytItem"
+div.innerText=v.snippet.title
+
+div.onclick=()=>{
+playVideo(v.id.videoId)
+}
+
+ytResults.appendChild(div)
+
+})
+
+})
+}
+
+/* PLAY VIDEO */
+function playVideo(id){
+ytPlayer.innerHTML=`
+<iframe src="https://www.youtube.com/embed/${id}?autoplay=1" allow="autoplay"></iframe>
+`
+}
