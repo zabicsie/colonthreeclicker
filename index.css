@@ -7,7 +7,7 @@ color:white;
 overflow:hidden;
 }
 
-/* COUNTER + STATS */
+/* COUNTER */
 #counter{
 text-align:center;
 font-size:40px;
@@ -17,7 +17,6 @@ margin-top:20px;
 #stats{
 text-align:center;
 margin-top:10px;
-font-size:18px;
 }
 
 /* MAIN BUTTON */
@@ -55,7 +54,7 @@ cursor:pointer;
 background:rgba(255,255,255,0.2);
 }
 
-/* MENU BUTTON */
+/* BUTTONS */
 #menuBtn{
 position:fixed;
 top:10px;
@@ -65,35 +64,37 @@ color:white;
 border:none;
 padding:10px;
 cursor:pointer;
-z-index:5;
 border-radius:8px;
 }
 
-/* ACHIEVEMENTS MENU */
+#gambleBtn{
+position:fixed;
+top:10px;
+left:60px;
+background:linear-gradient(45deg, purple, magenta);
+color:white;
+border:none;
+padding:10px;
+cursor:pointer;
+border-radius:8px;
+}
+
+/* ACH MENU */
 #dropdown{
 position:fixed;
 top:50px;
 left:10px;
 width:260px;
-background:linear-gradient(180deg, #4b0082, #800080);
-border:2px solid rgba(255,255,255,0.3);
+background:linear-gradient(#4b0082,#800080);
 border-radius:12px;
 display:none;
-padding:12px;
+padding:10px;
 max-height:400px;
 overflow:auto;
-box-shadow:0 0 15px rgba(0,0,0,0.5);
-}
-
-#dropdown h3{
-text-align:center;
-margin-top:0;
-margin-bottom:10px;
-font-size:20px;
 }
 
 .ach{
-padding:8px 5px;
+padding:6px;
 }
 
 .ach.locked{
@@ -103,47 +104,62 @@ font-style:italic;
 
 .divider{
 text-align:center;
-margin:5px 0;
 opacity:0.5;
 }
 
-/* NOTIFICATIONS */
+/* GAMBLING */
+#gambleMenu{
+position:fixed;
+top:50px;
+left:280px;
+width:220px;
+background:linear-gradient(#4b0082,#800080);
+border-radius:12px;
+padding:10px;
+display:none;
+text-align:center;
+}
+
+#spinBtn{
+background:gold;
+border:none;
+padding:10px;
+cursor:pointer;
+border-radius:8px;
+}
+
+#spinResult{
+margin-top:10px;
+}
+
+/* NOTIFS */
 #notif{
 position:fixed;
 top:10px;
-left:80px;
+left:120px;
 }
 
-/* BOTTOM BAR */
+/* BOTTOM */
 #bottomBar{
 position:fixed;
 bottom:0;
 width:100%;
 display:flex;
 justify-content:space-between;
-align-items:center;
 padding:10px;
 }
 
 #version{
-text-align:center;
 width:100%;
-font-size:20px;
+text-align:center;
 }
 
-/* RAGE BUTTON */
 #hateBtn{
-background:linear-gradient(45deg, purple, magenta);
+background:linear-gradient(45deg,purple,magenta);
 border:none;
-padding:10px 20px;
-color:white;
-cursor:pointer;
+padding:10px;
 border-radius:10px;
-transition:0.2s;
-}
-
-#hateBtn:hover{
-transform:scale(1.1);
+cursor:pointer;
 }
 
 /* VIDEOS */

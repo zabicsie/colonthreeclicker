@@ -1,35 +1,33 @@
 let colon3=0
 let clickStrength=1
 let autoStrength=0
+let totalClicks=0
 
 const counter=document.getElementById("counter")
 const perSec=document.getElementById("perSec")
 const perClick=document.getElementById("perClick")
 
+/* CLICK */
 document.getElementById("colon3").onclick=()=>{
 colon3+=clickStrength
+totalClicks++
 unlock("click1")
+checkSpecials()
 update()
 }
 
 /* SHOP */
 let shopItems=[
-
 {name:"+1 click strength",cost:10,type:"click",value:1,owned:0},
 {name:"+5 auto",cost:50,type:"auto",value:5,owned:0},
-
 {name:"+5 click",cost:200,type:"click",value:5,owned:0},
 {name:"+25 auto",cost:500,type:"auto",value:25,owned:0},
-
 {name:"+20 click",cost:2000,type:"click",value:20,owned:0},
 {name:"+100 auto",cost:5000,type:"auto",value:100,owned:0},
-
 {name:"+100 click",cost:20000,type:"click",value:100,owned:0},
 {name:"+500 auto",cost:50000,type:"auto",value:500,owned:0},
-
 {name:"SUPER click +1000",cost:150000,type:"click",value:1000,owned:0},
 {name:"MEGA auto +2000",cost:300000,type:"auto",value:2000,owned:0}
-
 ]
 
 const shop=document.getElementById("shop")
@@ -41,7 +39,7 @@ let div=document.createElement("div")
 div.className="item"
 div.innerHTML=`
 ${item.name}<br>
-Cost: ${item.cost}<br>
+Cost: ${format(item.cost)}<br>
 Owned: ${item.owned}
 `
 div.onclick=()=>buy(i)
@@ -62,6 +60,8 @@ autoStrength+=item.value
 unlock("auto1")
 }
 
+unlock("shop1")
+
 item.cost=Math.floor(item.cost*1.5)
 
 renderShop()
@@ -74,12 +74,15 @@ colon3+=autoStrength
 update()
 },1000)
 
+/* UPDATE */
 function update(){
 counter.innerText=":3 : "+format(colon3)
 perSec.innerText=autoStrength
 perClick.innerText=clickStrength
 
 checkAchievements()
+checkAllAchievement()
+
 if(colon3>=1e12) win()
 }
 
@@ -87,104 +90,168 @@ function format(n){
 return Math.floor(n).toLocaleString()
 }
 
-/* MENU */
-document.getElementById("menuBtn").onclick=()=>{
-let d=document.getElementById("dropdown")
-d.style.display=d.style.display=="block"?"none":"block"
+/* MENUS */
+menuBtn.onclick=()=>{
+dropdown.style.display=dropdown.style.display=="block"?"none":"block"
+}
+
+gambleBtn.onclick=()=>{
+gambleMenu.style.display=gambleMenu.style.display=="block"?"none":"block"
 }
 
 /* ACHIEVEMENTS */
 let achievements={
-
 click1:{name:"One of Many",desc:"ur first ever click",got:false},
 thousand:{name:"Still More to Go",desc:"reach 1,000 :3s",got:false},
 million:{name:"My Fingers Are Getting Tired",desc:"reach 1m :3s",got:false},
 auto1:{name:"A Handful of Help",desc:"get auto income",got:false},
-
-custom1:{name:"You Actually Like This Game?",desc:"keep playing...",got:false},
-rich:{name:"Getting Serious",desc:"reach 100k :3s",got:false},
-insane:{name:"This Is Out of Hand",desc:"reach 1b :3s",got:false},
-
-grinder:{name:"Endless Grinder",desc:"reach 10b :3s",got:false},
-god:{name:":3 God",desc:"reach 100b :3s",got:false},
-noLife:{name:"No Life Detected",desc:"reach 1t :3s",got:false}
-
+shop1:{name:"First Purchase",desc:"buy something",got:false},
+clicker:{name:"Click Frenzy",desc:"click 100 times",got:false},
+idle:{name:"Let It Do The Work",desc:"reach 100/sec",got:false},
+rich:{name:"Getting Serious",desc:"reach 100k",got:false},
+all:{name:"Is there anymore to get?",desc:"i dont think so....",got:false,golden:true}
 }
 
 function unlock(id){
-if(!achievements[id].got){
-achievements[id].got=true
-notify(achievements[id].name)
+let a=achievements[id]
+if(!a||a.got) return
+a.got=true
+notify(a.name)
 renderAchievements()
-}
 }
 
 function checkAchievements(){
 if(colon3>=1000) unlock("thousand")
 if(colon3>=1e6) unlock("million")
 if(colon3>=100000) unlock("rich")
-if(colon3>=1e9) unlock("insane")
-if(colon3>=1e10) unlock("grinder")
-if(colon3>=1e11) unlock("god")
-if(colon3>=1e12) unlock("noLife")
 }
 
-/* RENDER ACHIEVEMENTS */
-function renderAchievements(){
-let list=document.getElementById("achList")
-list.innerHTML=""
+function checkSpecials(){
+if(totalClicks>=100) unlock("clicker")
+if(autoStrength>=100) unlock("idle")
+}
 
+function checkAllAchievement(){
+let allDone=true
+for(let k in achievements){
+if(k==="all") continue
+if(!achievements[k].got) allDone=false
+}
+if(allDone) unlock("all")
+}
+
+/* RENDER ACH */
+function renderAchievements(){
+achList.innerHTML=""
 let first=true
 
-for(let key in achievements){
+for(let k in achievements){
 
 if(!first){
-let divider=document.createElement("div")
-divider.className="divider"
-divider.innerText="-------"
-list.appendChild(divider)
+let d=document.createElement("div")
+d.className="divider"
+d.innerText="-------"
+achList.appendChild(d)
 }
 first=false
 
-let a=achievements[key]
-
+let a=achievements[k]
 let div=document.createElement("div")
 div.className="ach"
 
 if(a.got){
+if(a.golden) div.style.color="gold"
 div.innerHTML=`<b>${a.name}</b><br>${a.desc}`
 }else{
 div.classList.add("locked")
 div.innerHTML=`<b>???</b><br>?????`
 }
 
-list.appendChild(div)
+achList.appendChild(div)
 }
 }
 
-/* NOTIFICATION */
-function notify(text){
+/* NOTIF */
+function notify(t){
 let n=document.createElement("div")
-n.innerText="Achievement: "+text
-document.getElementById("notif").appendChild(n)
-
+n.innerText="Achievement: "+t
+notif.appendChild(n)
 setTimeout(()=>n.remove(),3000)
 }
 
-/* BUTTONS */
-document.getElementById("hateBtn").onclick=()=>{
-let v=document.getElementById("rageVid")
-v.style.display="block"
-v.play()
-v.requestFullscreen?.()
+/* GAMBLING (WEIGHTED + LOSSES) */
+let spinning=false
+
+spinBtn.onclick=()=>{
+
+if(spinning) return
+if(colon3<1000) return
+
+colon3-=1000
+spinning=true
+
+let rewards=[
+{value:-5000,weight:5},
+{value:-1000,weight:15},
+{value:0,weight:20},
+{value:500,weight:25},
+{value:2000,weight:20},
+{value:10000,weight:10},
+{value:100000,weight:4},
+{value:1000000,weight:1}
+]
+
+function getReward(){
+let total=rewards.reduce((a,b)=>a+b.weight,0)
+let rand=Math.random()*total
+
+for(let r of rewards){
+if(rand<r.weight) return r.value
+rand-=r.weight
+}
 }
 
-/* WIN */
+let time=2000
+let int=100
+let elapsed=0
+
+let spin=setInterval(()=>{
+let preview=getReward()
+spinResult.innerText="Spinning... "+format(preview)
+elapsed+=int
+
+if(elapsed>=time){
+clearInterval(spin)
+
+let final=getReward()
+colon3+=final
+
+if(final>0){
+spinResult.innerText="You WON "+format(final)
+}else if(final<0){
+spinResult.innerText="You LOST "+format(Math.abs(final))
+}else{
+spinResult.innerText="Nothing..."
+}
+
+spinning=false
+update()
+}
+},int)
+
+}
+
+/* BUTTONS */
+hateBtn.onclick=()=>{
+rageVid.style.display="block"
+rageVid.play()
+rageVid.requestFullscreen?.()
+}
+
 function win(){
-let v=document.getElementById("winVid")
-v.style.display="block"
-v.play()
-v.requestFullscreen?.()
+winVid.style.display="block"
+winVid.play()
+winVid.requestFullscreen?.()
 }
 
 /* INIT */
