@@ -173,27 +173,44 @@ display:none;
 object-fit:cover;
 z-index:999;
 }
-/* YOUTUBE PANEL */
-#ytPanel{
+
+/* YOUTUBE BUTTON */
+#ytToggle{
 position:fixed;
-top:0;
-right:260px; /* next to shop */
-width:300px;
-height:100%;
-background:linear-gradient(#4b0082,#800080);
+top:10px;
+right:270px;
+background:linear-gradient(45deg,purple,magenta);
+color:white;
+border:none;
 padding:10px;
-overflow-y:auto;
+border-radius:8px;
+cursor:pointer;
 }
 
+/* DROPDOWN */
+#ytDropdown{
+position:fixed;
+top:50px;
+right:270px;
+width:300px;
+background:linear-gradient(#4b0082,#800080);
+border-radius:12px;
+padding:10px;
+display:none;
+max-height:400px;
+overflow:auto;
+}
+
+/* INPUT */
 #ytSearch{
-width:70%;
+width:65%;
 padding:6px;
 border:none;
 border-radius:6px;
 }
 
 #ytBtn{
-width:25%;
+width:30%;
 padding:6px;
 border:none;
 border-radius:6px;
@@ -202,6 +219,7 @@ color:white;
 cursor:pointer;
 }
 
+/* RESULTS */
 .ytItem{
 padding:8px;
 border-bottom:1px solid rgba(255,255,255,0.3);
@@ -212,6 +230,7 @@ cursor:pointer;
 background:rgba(255,255,255,0.2);
 }
 
+/* PLAYER */
 #ytPlayer iframe{
 width:100%;
 height:180px;

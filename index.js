@@ -347,3 +347,9 @@ ytPlayer.innerHTML=`
 <iframe src="https://www.youtube.com/embed/${id}?autoplay=1" allow="autoplay"></iframe>
 `
 }
+
+/* YT DROPDOWN TOGGLE */
+ytToggle.onclick=()=>{
+ytDropdown.style.display=
+ytDropdown.style.display=="block"?"none":"block"
+}
