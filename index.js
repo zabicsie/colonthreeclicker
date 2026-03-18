@@ -27,7 +27,13 @@ let shopItems=[
 {name:"+100 click",cost:20000,type:"click",value:100,owned:0},
 {name:"+500 auto",cost:50000,type:"auto",value:500,owned:0},
 {name:"SUPER click +1000",cost:150000,type:"click",value:1000,owned:0},
-{name:"MEGA auto +2000",cost:300000,type:"auto",value:2000,owned:0}
+{name:"MEGA auto +2000",cost:300000,type:"auto",value:2000,owned:0},
+{name:"INSANE click +10000",cost:1000000,type:"click",value:10000,owned:0},
+{name:"HYPER auto +50000",cost:3000000,type:"auto",value:50000,owned:0},
+{name:"GALAXY click +1M",cost:20000000,type:"click",value:1000000,owned:0},
+{name:"VOID auto +5M",cost:50000000,type:"auto",value:5000000,owned:0},
+{name:"UNREAL click +50M",cost:500000000,type:"click",value:50000000,owned:0},
+{name:"COSMIC auto +100M",cost:1000000000,type:"auto",value:100000000,owned:0}
 ]
 
 const shop=document.getElementById("shop")
@@ -109,7 +115,15 @@ shop1:{name:"First Purchase",desc:"buy something",got:false},
 clicker:{name:"Click Frenzy",desc:"click 100 times",got:false},
 idle:{name:"Let It Do The Work",desc:"reach 100/sec",got:false},
 rich:{name:"Getting Serious",desc:"reach 100k",got:false},
-all:{name:"Is there anymore to get?",desc:"i dont think so....",got:false,golden:true}
+all:{name:"Is there anymore to get?",desc:"i dont think so....",got:false,golden:true},
+clicker2:{name:"Where did my fingers go?",desc:"Oh, They snapped off...",got:false},
+idle2:{name:"Machines Everywhere",desc:"1M/sec",got:false},
+bigClick:{name:"Strong Fingers",desc:"1k click power",got:false},
+godClick:{name:"Finger God",desc:"1M click power",got:false},
+ultraRich:{name:"Filthy Rich",desc:"1B",got:false},
+absurd:{name:"This is Absurd",desc:"1T total",got:false},
+gambler:{name:"Risk Taker",desc:"gamble once",got:false},
+addict:{name:"Gambling Addict",desc:"gamble 50 times",got:false}
 }
 
 function unlock(id){
@@ -124,11 +138,17 @@ function checkAchievements(){
 if(colon3>=1000) unlock("thousand")
 if(colon3>=1e6) unlock("million")
 if(colon3>=100000) unlock("rich")
+if(colon3>=1e9) unlock("ultraRich")
+if(colon3>=1e12) unlock("absurd")
 }
 
 function checkSpecials(){
 if(totalClicks>=100) unlock("clicker")
 if(autoStrength>=100) unlock("idle")
+if(totalClicks>=1000) unlock("clicker2")
+if(autoStrength>=1000000) unlock("idle2")
+if(clickStrength>=1000) unlock("bigClick")
+if(clickStrength>=1000000) unlock("godClick")
 }
 
 function checkAllAchievement(){
@@ -191,6 +211,7 @@ colon3-=1000
 spinning=true
 
 let rewards=[
+{value:-100000,weight:2},
 {value:-5000,weight:5},
 {value:-1000,weight:15},
 {value:0,weight:20},
@@ -198,7 +219,8 @@ let rewards=[
 {value:2000,weight:20},
 {value:10000,weight:10},
 {value:100000,weight:4},
-{value:1000000,weight:1}
+{value:1000000,weight:1},
+{value:10000000,weight:1}
 ]
 
 function getReward(){
@@ -240,6 +262,26 @@ update()
 },int)
 
 }
+/* SAVE SYSTEM */
+function saveGame(){
+localStorage.setItem("colon3Save",JSON.stringify({
+colon3,clickStrength,autoStrength,totalClicks,shopItems,achievements
+}))
+}
+
+function loadGame(){
+let save=JSON.parse(localStorage.getItem("colon3Save"))
+if(!save) return
+
+colon3=save.colon3
+clickStrength=save.clickStrength
+autoStrength=save.autoStrength
+totalClicks=save.totalClicks
+shopItems=save.shopItems
+achievements=save.achievements
+}
+
+loadGame()
 
 /* BUTTONS */
 hateBtn.onclick=()=>{
