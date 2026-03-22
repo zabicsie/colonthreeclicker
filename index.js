@@ -1,7 +1,10 @@
+// FIXED VERSION (JS ONLY CHANGES)
+
 let colon3=0
 let clickStrength=1
 let autoStrength=0
 let totalClicks=0
+let gambleCount=0
 
 const counter=document.getElementById("counter")
 const perSec=document.getElementById("perSec")
@@ -10,6 +13,7 @@ const perClick=document.getElementById("perClick")
 /* CLICK */
 document.getElementById("colon3").onclick=()=>{
 colon3+=clickStrength
+colon3=Math.max(0,colon3)
 totalClicks++
 unlock("click1")
 checkSpecials()
@@ -43,11 +47,7 @@ shop.innerHTML=""
 shopItems.forEach((item,i)=>{
 let div=document.createElement("div")
 div.className="item"
-div.innerHTML=`
-${item.name}<br>
-Cost: ${format(item.cost)}<br>
-Owned: ${item.owned}
-`
+div.innerHTML=`${item.name}<br>Cost: ${format(item.cost)}<br>Owned: ${item.owned}`
 div.onclick=()=>buy(i)
 shop.appendChild(div)
 })
@@ -67,16 +67,16 @@ unlock("auto1")
 }
 
 unlock("shop1")
-
 item.cost=Math.floor(item.cost*1.5)
 
-renderShop()
 update()
+renderShop()
 }
 
 /* LOOP */
 setInterval(()=>{
 colon3+=autoStrength
+colon3=Math.max(0,colon3)
 update()
 },1000)
 
@@ -94,15 +94,6 @@ if(colon3>=1e12) win()
 
 function format(n){
 return Math.floor(n).toLocaleString()
-}
-
-/* MENUS */
-menuBtn.onclick=()=>{
-dropdown.style.display=dropdown.style.display=="block"?"none":"block"
-}
-
-gambleBtn.onclick=()=>{
-gambleMenu.style.display=gambleMenu.style.display=="block"?"none":"block"
 }
 
 /* ACHIEVEMENTS */
@@ -160,55 +151,19 @@ if(!achievements[k].got) allDone=false
 if(allDone) unlock("all")
 }
 
-/* RENDER ACH */
-function renderAchievements(){
-achList.innerHTML=""
-let first=true
-
-for(let k in achievements){
-
-if(!first){
-let d=document.createElement("div")
-d.className="divider"
-d.innerText="-------"
-achList.appendChild(d)
-}
-first=false
-
-let a=achievements[k]
-let div=document.createElement("div")
-div.className="ach"
-
-if(a.got){
-if(a.golden) div.style.color="gold"
-div.innerHTML=`<b>${a.name}</b><br>${a.desc}`
-}else{
-div.classList.add("locked")
-div.innerHTML=`<b>???</b><br>?????`
-}
-
-achList.appendChild(div)
-}
-}
-
-/* NOTIF */
-function notify(t){
-let n=document.createElement("div")
-n.innerText="Achievement: "+t
-notif.appendChild(n)
-setTimeout(()=>n.remove(),3000)
-}
-
-/* GAMBLING (WEIGHTED + LOSSES) */
+/* GAMBLING FIXED */
 let spinning=false
 
 spinBtn.onclick=()=>{
-
 if(spinning) return
 if(colon3<1000) return
 
 colon3-=1000
 spinning=true
+
+gambleCount++
+unlock("gambler")
+if(gambleCount>=50) unlock("addict")
 
 let rewards=[
 {value:-100000,weight:2},
@@ -231,22 +186,19 @@ for(let r of rewards){
 if(rand<r.weight) return r.value
 rand-=r.weight
 }
+return 0
 }
-
-let time=2000
-let int=100
-let elapsed=0
 
 let spin=setInterval(()=>{
 let preview=getReward()
 spinResult.innerText="Spinning... "+format(preview)
-elapsed+=int
 
-if(elapsed>=time){
+if(Math.random()<0.1){
 clearInterval(spin)
 
 let final=getReward()
 colon3+=final
+colon3=Math.max(0,colon3)
 
 if(final>0){
 spinResult.innerText="You WON "+format(final)
@@ -259,29 +211,29 @@ spinResult.innerText="Nothing..."
 spinning=false
 update()
 }
-},int)
-
-}
-/* SAVE SYSTEM */
-function saveGame(){
-localStorage.setItem("colon3Save",JSON.stringify({
-colon3,clickStrength,autoStrength,totalClicks,shopItems,achievements
-}))
+},100)
 }
 
-function loadGame(){
-let save=JSON.parse(localStorage.getItem("colon3Save"))
-if(!save) return
+/* INIT */
+renderShop()
+renderAchievements()
+update()
 
-colon3=save.colon3
-clickStrength=save.clickStrength
-autoStrength=save.autoStrength
-totalClicks=save.totalClicks
-shopItems=save.shopItems
-achievements=save.achievements
+/* YOUTUBE (API REMOVED FOR SAFETY) */
+ytBtn.onclick=()=>{
+ytResults.innerHTML="YouTube search disabled (API key removed for safety)."
 }
 
-loadGame()
+/* PLAYER */
+function playVideo(id){
+ytPlayer.innerHTML=`<iframe src="https://www.youtube.com/embed/${id}?autoplay=1" allow="autoplay"></iframe>`
+}
+
+/* TOGGLE */
+ytToggle.onclick=()=>{
+ytDropdown.style.display=
+ytDropdown.style.display=="block"?"none":"block"
+}
 
 /* BUTTONS */
 hateBtn.onclick=()=>{
@@ -294,62 +246,4 @@ function win(){
 winVid.style.display="block"
 winVid.play()
 winVid.requestFullscreen?.()
-}
-
-/* INIT */
-renderShop()
-renderAchievements()
-update()
-
-/*************** YOUTUBE SEARCH ***************/
-const ytBtn=document.getElementById("ytBtn")
-const ytSearch=document.getElementById("ytSearch")
-const ytResults=document.getElementById("ytResults")
-const ytPlayer=document.getElementById("ytPlayer")
-
-const API_KEY="AIzaSyB-BGMK2osPDfyIhTJ3sfAQmoISZLoV5cQ"
-
-ytBtn.onclick=searchYT
-
-function searchYT(){
-
-let q=ytSearch.value
-if(!q) return
-
-ytResults.innerHTML="Searching..."
-
-fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=10&q=${encodeURIComponent(q)}&key=${API_KEY}`)
-.then(res=>res.json())
-.then(data=>{
-
-ytResults.innerHTML=""
-
-data.items.forEach(v=>{
-
-let div=document.createElement("div")
-div.className="ytItem"
-div.innerText=v.snippet.title
-
-div.onclick=()=>{
-playVideo(v.id.videoId)
-}
-
-ytResults.appendChild(div)
-
-})
-
-})
-}
-
-/* PLAY VIDEO */
-function playVideo(id){
-ytPlayer.innerHTML=`
-<iframe src="https://www.youtube.com/embed/${id}?autoplay=1" allow="autoplay"></iframe>
-`
-}
-
-/* YT DROPDOWN TOGGLE */
-ytToggle.onclick=()=>{
-ytDropdown.style.display=
-ytDropdown.style.display=="block"?"none":"block"
 }
