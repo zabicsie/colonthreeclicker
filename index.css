@@ -75,10 +75,7 @@ background:rgba(255,255,255,0.2);
 
 /* BUTTONS */
 #menuBtn,
-#gambleBtn,
-#alienBtn,
-#exchangeBtn,
-#romanceBtn{
+#toolsBtn{
 position:fixed;
 top:10px;
 padding:10px;
@@ -89,10 +86,32 @@ z-index:20;
 }
 
 #menuBtn{left:16px;background:purple;}
-#gambleBtn{left:82px;background:linear-gradient(45deg, purple, magenta);}
-#alienBtn{left:240px;background:green;}
-#exchangeBtn{left:410px;background:orange;color:black;}
-#romanceBtn{left:565px;background:linear-gradient(45deg,#ff4fa3,#ff8ac7);}
+#toolsBtn{left:82px;background:linear-gradient(45deg, purple, magenta);}
+
+#gambleBtn,
+#alienBtn,
+#exchangeBtn,
+#romanceBtn,
+#ytToggle{
+display:block;
+width:100%;
+margin-bottom:8px;
+padding:10px;
+border:0;
+border-radius:8px;
+cursor:pointer;
+text-align:center;
+}
+
+#gambleBtn{background:linear-gradient(45deg, purple, magenta);}
+#alienBtn{background:green;}
+#exchangeBtn{background:orange;color:black;}
+#romanceBtn{background:linear-gradient(45deg,#ff4fa3,#ff8ac7);}
+#toolsMenu #ytToggle{
+position:static;
+background:linear-gradient(45deg,purple,magenta);
+color:white;
+}
 
 /* ACH MENU */
 #dropdown{
@@ -106,6 +125,18 @@ display:none;
 padding:10px;
 max-height:400px;
 overflow:auto;
+z-index:30;
+}
+
+#toolsMenu{
+position:fixed;
+top:55px;
+left:285px;
+width:230px;
+background:linear-gradient(#4b0082,#800080);
+border-radius:8px;
+display:none;
+padding:10px;
 z-index:30;
 }
 
@@ -297,20 +328,6 @@ object-fit:cover;
 z-index:999;
 }
 
-/* YOUTUBE */
-#ytToggle{
-position:fixed;
-top:10px;
-right:270px;
-background:linear-gradient(45deg,purple,magenta);
-color:white;
-border:none;
-padding:10px;
-border-radius:8px;
-cursor:pointer;
-z-index:20;
-}
-
 #ytDropdown{
 right:270px;
 width:330px;
@@ -381,11 +398,8 @@ right:0;
 bottom:270px;
 }
 
-#ytToggle{
-right:10px;
-}
-
 #dropdown,
+#toolsMenu,
 #gambleMenu,
 #alienShop,
 #exchangeMenu,
@@ -397,8 +411,5 @@ top:110px;
 width:auto;
 }
 
-#gambleBtn{left:82px;}
-#alienBtn{left:16px;top:64px;}
-#exchangeBtn{left:185px;top:64px;}
-#romanceBtn{left:16px;top:118px;}
+#toolsBtn{left:82px;}
 }

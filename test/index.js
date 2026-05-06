@@ -9,7 +9,7 @@ let alienCurrency = 0;
 let spins = 0;
 let spinning = false;
 let hasWon = false;
-let romanceState = { step: 0, score: 0, finished: false, lastReward: 0 };
+let romanceState = { step: 0, score: 0, finished: false, lastReward: 0, runs: 0 };
 
 const $ = (id) => document.getElementById(id);
 
@@ -19,6 +19,8 @@ const perClick = $("perClick");
 const colonButton = $("colon3");
 const shop = $("shop");
 const menuBtn = $("menuBtn");
+const toolsBtn = $("toolsBtn");
+const toolsMenu = $("toolsMenu");
 const gambleBtn = $("gambleBtn");
 const dropdown = $("dropdown");
 const achList = $("achList");
@@ -64,7 +66,17 @@ let shopItems = [
   { name: "GALAXY click +1M", cost: 20000000, type: "click", value: 1000000, owned: 0 },
   { name: "VOID auto +5M", cost: 50000000, type: "auto", value: 5000000, owned: 0 },
   { name: "UNREAL click +50M", cost: 500000000, type: "click", value: 50000000, owned: 0 },
-  { name: "COSMIC auto +100M", cost: 1000000000, type: "auto", value: 100000000, owned: 0 }
+  { name: "COSMIC auto +100M", cost: 1000000000, type: "auto", value: 100000000, owned: 0 },
+  { name: "STAR click +250M", cost: 5000000000, type: "click", value: 250000000, owned: 0 },
+  { name: "NEBULA auto +750M", cost: 10000000000, type: "auto", value: 750000000, owned: 0 },
+  { name: "QUANTUM click +1B", cost: 50000000000, type: "click", value: 1000000000, owned: 0 },
+  { name: "WARP auto +5B", cost: 100000000000, type: "auto", value: 5000000000, owned: 0 },
+  { name: "REALITY click +25B", cost: 1000000000000, type: "click", value: 25000000000, owned: 0 },
+  { name: "TIMELINE auto +100B", cost: 5000000000000, type: "auto", value: 100000000000, owned: 0 },
+  { name: "INFINITY click +1T", cost: 50000000000000, type: "click", value: 1000000000000, owned: 0 },
+  { name: "ETERNAL auto +5T", cost: 100000000000000, type: "auto", value: 5000000000000, owned: 0 },
+  { name: "ASCENDED click +50T", cost: 1000000000000000, type: "click", value: 50000000000000, owned: 0 },
+  { name: "FINAL auto +250T", cost: 5000000000000000, type: "auto", value: 250000000000000, owned: 0 }
 ];
 
 let alienShopItems = [
@@ -93,6 +105,21 @@ let achievements = {
   addict: { name: "Gambling Addict", desc: "gamble 50 times", got: false },
   alien: { name: "Space Money", desc: "get your first :P", got: false },
   romance: { name: "Soft Paws", desc: "successfully romance the :3", got: false },
+  romancePerfect: { name: "Purrfect Match", desc: "get a perfect romance score", got: false },
+  romanceAgain: { name: "Second Date", desc: "romance the :3 more than once", got: false },
+  shopper5: { name: "Window Shopping", desc: "own 5 shop upgrades", got: false },
+  shopper15: { name: "Receipt Collector", desc: "own 15 shop upgrades", got: false },
+  shopper30: { name: "Mall Walker", desc: "own 30 shop upgrades", got: false },
+  clicker3: { name: "Click Storm", desc: "click 5,000 times", got: false },
+  clicker4: { name: "Click Singularity", desc: "click 25,000 times", got: false },
+  idle3: { name: "Factory Floor", desc: "reach 1B/sec", got: false },
+  idle4: { name: "Automatic Universe", desc: "reach 1T/sec", got: false },
+  godClick2: { name: "Planet Tapper", desc: "10B click power", got: false },
+  godClick3: { name: "Reality Tapper", desc: "1T click power", got: false },
+  trillionaire: { name: "Trillionaire", desc: "reach 10T :3s", got: false },
+  quadrillionaire: { name: "Number Soup", desc: "reach 1Q :3s", got: false },
+  casinoRoyalty: { name: "Casino Royalty", desc: "gamble 250 times", got: false },
+  alienCollector: { name: "Alien Investor", desc: "own every alien shop upgrade", got: false },
   all: { name: "Is there anymore to get?", desc: "i dont think so....", got: false, golden: true }
 };
 
@@ -170,7 +197,167 @@ const romanceChats = [
     ]
   },
   {
-    cat: ":3 texts: 'final question. would u share ur last treat with me'",
+    cat: ":3 texts: 'would u still text me if i hid under the couch for no reason'",
+    options: [
+      { text: "yes, i would send gentle updates from the floor", score: 2 },
+      { text: "probably, depends how long", score: 1 },
+      { text: "no, that is couch behavior", score: 0 }
+    ]
+  },
+  {
+    cat: ":3 texts: 'i brought u a leaf. it is important'",
+    options: [
+      { text: "i will treasure the sacred leaf", score: 2 },
+      { text: "thanks, nice leaf", score: 1 },
+      { text: "please put it outside", score: 0 }
+    ]
+  },
+  {
+    cat: ":3 texts: 'what song would u play for me'",
+    options: [
+      { text: "something soft enough for a sleepy tail twitch", score: 2 },
+      { text: "probably lofi", score: 1 },
+      { text: "an alarm clock sound", score: 0 }
+    ]
+  },
+  {
+    cat: ":3 texts: 'i sat on ur jacket because it smelled like u'",
+    options: [
+      { text: "keep it, it is yours now", score: 2 },
+      { text: "that is kind of sweet", score: 1 },
+      { text: "i needed that jacket", score: 0 }
+    ]
+  },
+  {
+    cat: ":3 texts: 'do u think my whiskers are dramatic'",
+    options: [
+      { text: "cinematic. award winning whiskers", score: 2 },
+      { text: "a little, in a good way", score: 1 },
+      { text: "they are just whiskers", score: 0 }
+    ]
+  },
+  {
+    cat: ":3 texts: 'i practiced my tiny meow for u'",
+    options: [
+      { text: "10/10, encore please", score: 2 },
+      { text: "pretty good meow", score: 1 },
+      { text: "needs work", score: 0 }
+    ]
+  },
+  {
+    cat: ":3 texts: 'should we have matching friendship collars'",
+    options: [
+      { text: "yes, mine says officially chosen", score: 2 },
+      { text: "maybe matching colors", score: 1 },
+      { text: "i do not wear collars", score: 0 }
+    ]
+  },
+  {
+    cat: ":3 texts: 'i got scared by my own tail'",
+    options: [
+      { text: "a mysterious and powerful opponent", score: 2 },
+      { text: "it happens", score: 1 },
+      { text: "how did u lose to a tail", score: 0 }
+    ]
+  },
+  {
+    cat: ":3 texts: 'where should our first fancy date be'",
+    options: [
+      { text: "sunbeam table by the window", score: 2 },
+      { text: "somewhere cozy", score: 1 },
+      { text: "the shop aisle", score: 0 }
+    ]
+  },
+  {
+    cat: ":3 texts: 'i slow blinked at the wall by accident. jealous?'",
+    options: [
+      { text: "a little, but i respect the wall", score: 2 },
+      { text: "maybe slightly", score: 1 },
+      { text: "the wall can have u", score: 0 }
+    ]
+  },
+  {
+    cat: ":3 texts: 'what if i steal ur chair every day'",
+    options: [
+      { text: "then i will sit nearby and admire royalty", score: 2 },
+      { text: "we can trade off", score: 1 },
+      { text: "i will get a spray bottle", score: 0 }
+    ]
+  },
+  {
+    cat: ":3 texts: 'i dreamed we ran a tiny bakery'",
+    options: [
+      { text: "u make biscuits, i handle the sign", score: 2 },
+      { text: "sounds cute", score: 1 },
+      { text: "that sounds like work", score: 0 }
+    ]
+  },
+  {
+    cat: ":3 texts: 'would u defend me from the vacuum'",
+    options: [
+      { text: "with honor and a closed closet door", score: 2 },
+      { text: "i would turn it off", score: 1 },
+      { text: "the vacuum has a job", score: 0 }
+    ]
+  },
+  {
+    cat: ":3 texts: 'what nickname would u give me'",
+    options: [
+      { text: "little moonbeam menace", score: 2 },
+      { text: "buddy", score: 1 },
+      { text: "tax collector", score: 0 }
+    ]
+  },
+  {
+    cat: ":3 texts: 'i saved u the warm spot on the blanket'",
+    options: [
+      { text: "that is basically a love letter", score: 2 },
+      { text: "thank u, very warm", score: 1 },
+      { text: "i prefer cold blankets", score: 0 }
+    ]
+  },
+  {
+    cat: ":3 texts: 'if i bap ur hand is it flirting'",
+    options: [
+      { text: "yes, very advanced paw flirting", score: 2 },
+      { text: "maybe a little", score: 1 },
+      { text: "sounds like violence", score: 0 }
+    ]
+  },
+  {
+    cat: ":3 texts: 'i saw a bird and thought of bravery'",
+    options: [
+      { text: "u are brave for letting it live rent free", score: 2 },
+      { text: "birds are exciting", score: 1 },
+      { text: "ok bird watcher", score: 0 }
+    ]
+  },
+  {
+    cat: ":3 texts: 'would u read me a bedtime story'",
+    options: [
+      { text: "yes, with all the dramatic voices", score: 2 },
+      { text: "sure, a short one", score: 1 },
+      { text: "read it yourself", score: 0 }
+    ]
+  },
+  {
+    cat: ":3 texts: 'i think i would share my favorite sunbeam with u'",
+    options: [
+      { text: "that is the highest honor i know", score: 2 },
+      { text: "sounds warm", score: 1 },
+      { text: "i might block the light", score: 0 }
+    ]
+  },
+  {
+    cat: ":3 texts: 'if i purr during a movie do we have to restart the scene'",
+    options: [
+      { text: "yes, your commentary is part of the plot", score: 2 },
+      { text: "only for important scenes", score: 1 },
+      { text: "no purring during movies", score: 0 }
+    ]
+  },
+  {
+    cat: ":3 texts: 'final final question. would u share ur last treat with me'",
     options: [
       { text: "yes, i saved it for you", score: 2 },
       { text: "we can split it", score: 1 },
@@ -262,7 +449,7 @@ function exchangeCurrency() {
 }
 
 function resetRomance() {
-  romanceState = { step: 0, score: 0, finished: false, lastReward: 0 };
+  romanceState = { step: 0, score: 0, finished: false, lastReward: 0, runs: romanceState.runs || 0 };
   renderRomance();
   saveGame();
 }
@@ -280,8 +467,11 @@ function chooseRomance(option) {
   if (romanceState.step >= romanceChats.length) {
     romanceState.finished = true;
     romanceState.lastReward = getRomanceReward();
+    romanceState.runs = (romanceState.runs || 0) + 1;
     colon3 += romanceState.lastReward;
-    if (romanceState.score >= 14) unlock("romance");
+    if (romanceState.score >= Math.ceil(romanceChats.length * 1.4)) unlock("romance");
+    if (romanceState.score >= romanceChats.length * 2) unlock("romancePerfect");
+    if (romanceState.runs >= 2) unlock("romanceAgain");
     update();
   } else {
     renderRomance();
@@ -332,12 +522,27 @@ function checkAchievements() {
   if (colon3 >= 1e6) unlock("million");
   if (colon3 >= 1e9) unlock("ultraRich");
   if (colon3 >= 1e12) unlock("absurd");
+  if (colon3 >= 1e13) unlock("trillionaire");
+  if (colon3 >= 1e15) unlock("quadrillionaire");
   if (totalClicks >= 100) unlock("clicker");
   if (totalClicks >= 1000) unlock("clicker2");
+  if (totalClicks >= 5000) unlock("clicker3");
+  if (totalClicks >= 25000) unlock("clicker4");
   if (autoStrength >= 100) unlock("idle");
   if (autoStrength >= 1000000) unlock("idle2");
+  if (autoStrength >= 1e9) unlock("idle3");
+  if (autoStrength >= 1e12) unlock("idle4");
   if (clickStrength >= 1000) unlock("bigClick");
   if (clickStrength >= 1000000) unlock("godClick");
+  if (clickStrength >= 1e10) unlock("godClick2");
+  if (clickStrength >= 1e12) unlock("godClick3");
+  if (spins >= 250) unlock("casinoRoyalty");
+  const ownedShopItems = shopItems.reduce((total, item) => total + item.owned, 0);
+  if (ownedShopItems >= 5) unlock("shopper5");
+  if (ownedShopItems >= 15) unlock("shopper15");
+  if (ownedShopItems >= 30) unlock("shopper30");
+  if (alienShopItems.every((item) => item.owned > 0)) unlock("alienCollector");
+  if ((romanceState.runs || 0) >= 2) unlock("romanceAgain");
 }
 
 function checkAllAchievement() {
@@ -421,7 +626,8 @@ function loadGame() {
         step: Math.min(Number(data.romanceState.step) || 0, romanceChats.length),
         score: Number(data.romanceState.score) || 0,
         finished: Boolean(data.romanceState.finished),
-        lastReward: Number(data.romanceState.lastReward) || 0
+        lastReward: Number(data.romanceState.lastReward) || 0,
+        runs: Number(data.romanceState.runs) || 0
       };
     }
 
@@ -620,6 +826,7 @@ colonButton?.addEventListener("click", () => {
 });
 
 menuBtn?.addEventListener("click", () => toggle(dropdown));
+toolsBtn?.addEventListener("click", () => toggle(toolsMenu));
 gambleBtn?.addEventListener("click", () => toggle(gambleMenu));
 ytToggle?.addEventListener("click", () => toggle($("ytDropdown")));
 spinBtn?.addEventListener("click", spin);
