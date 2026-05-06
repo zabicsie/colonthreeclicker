@@ -10,6 +10,14 @@ color:white;
 overflow:hidden;
 }
 
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:rgba(25,0,40,0.42);
+z-index:-1;
+}
+
 button,
 input{
 font:inherit;
@@ -24,11 +32,14 @@ color:inherit;
 text-align:center;
 font-size:40px;
 margin-top:20px;
+line-height:1.15;
+text-shadow:0 3px 12px rgba(0,0,0,0.55);
 }
 
 #stats{
 text-align:center;
 margin-top:10px;
+text-shadow:0 2px 8px rgba(0,0,0,0.45);
 }
 
 /* MAIN BUTTON */
@@ -46,6 +57,54 @@ from{transform:rotate(0);}
 to{transform:rotate(360deg);}
 }
 
+.rainbowDrop{
+position:fixed;
+top:-72px;
+width:58px;
+height:58px;
+border:3px solid rgba(255,255,255,0.92);
+border-radius:50%;
+background:conic-gradient(red, orange, yellow, lime, cyan, blue, magenta, red);
+box-shadow:0 0 22px rgba(255,255,255,0.75), 0 0 36px rgba(255,0,255,0.45);
+cursor:pointer;
+z-index:250;
+animation:rainbowFall 9s linear forwards, rainbowSpin 1.2s linear infinite;
+}
+
+@keyframes rainbowFall{
+from{top:-72px;}
+to{top:calc(100vh + 72px);}
+}
+
+@keyframes rainbowSpin{
+from{transform:rotate(0) scale(1);}
+50%{transform:rotate(180deg) scale(1.08);}
+to{transform:rotate(360deg) scale(1);}
+}
+
+.rainbowMode{
+animation:rainbowHue 1.5s linear infinite;
+}
+
+.rainbowMode #shop,
+.rainbowMode #dropdown,
+.rainbowMode #toolsMenu,
+.rainbowMode #gambleMenu,
+.rainbowMode #alienShop,
+.rainbowMode #exchangeMenu,
+.rainbowMode #romanceMenu,
+.rainbowMode #ytDropdown,
+.rainbowMode #bottomBar,
+.rainbowMode button,
+.rainbowMode .item{
+animation:rainbowHue 1s linear infinite;
+}
+
+@keyframes rainbowHue{
+from{filter:hue-rotate(0deg) saturate(1.3);}
+to{filter:hue-rotate(360deg) saturate(1.9);}
+}
+
 /* SHOP */
 #shop{
 position:fixed;
@@ -53,7 +112,9 @@ right:0;
 top:0;
 width:250px;
 height:100%;
-background:purple;
+background:rgba(80,0,100,0.92);
+border-left:1px solid rgba(255,255,255,0.22);
+box-shadow:-10px 0 24px rgba(0,0,0,0.35);
 overflow-y:auto;
 padding-bottom:60px;
 }
@@ -70,7 +131,7 @@ text-align:left;
 }
 
 .item:hover{
-background:rgba(255,255,255,0.2);
+background:rgba(255,255,255,0.18);
 }
 
 /* BUTTONS */
@@ -83,6 +144,7 @@ border:none;
 cursor:pointer;
 border-radius:8px;
 z-index:20;
+box-shadow:0 2px 10px rgba(0,0,0,0.25);
 }
 
 #menuBtn{left:16px;background:purple;}
@@ -101,6 +163,7 @@ border:0;
 border-radius:8px;
 cursor:pointer;
 text-align:center;
+box-shadow:0 2px 10px rgba(0,0,0,0.25);
 }
 
 #gambleBtn{background:linear-gradient(45deg, purple, magenta);}
@@ -126,6 +189,7 @@ padding:10px;
 max-height:400px;
 overflow:auto;
 z-index:30;
+box-shadow:0 12px 30px rgba(0,0,0,0.45);
 }
 
 #toolsMenu{
@@ -138,6 +202,7 @@ border-radius:8px;
 display:none;
 padding:10px;
 z-index:30;
+box-shadow:0 12px 30px rgba(0,0,0,0.45);
 }
 
 .ach{
@@ -173,6 +238,7 @@ text-align:center;
 max-height:400px;
 overflow:auto;
 z-index:30;
+box-shadow:0 12px 30px rgba(0,0,0,0.45);
 }
 
 #gambleMenu{
@@ -221,9 +287,18 @@ width:330px;
 background:linear-gradient(#c01876,#7d1a88);
 }
 
+#dropdown h3,
+#gambleMenu h3,
+#alienShop h3,
+#exchangeMenu h3,
+#romanceMenu h3{
+margin:0 0 10px;
+}
+
 #exchangeInput{
 width:100%;
-padding:6px;
+min-height:42px;
+padding:8px;
 border:none;
 border-radius:6px;
 margin:8px 0;
@@ -231,7 +306,8 @@ margin:8px 0;
 
 #exchangeConfirm{
 width:100%;
-padding:6px;
+min-height:42px;
+padding:8px;
 border:none;
 border-radius:6px;
 background:white;
@@ -261,7 +337,8 @@ color:gold;
 display:block;
 width:100%;
 margin-top:8px;
-padding:9px;
+min-height:42px;
+padding:8px 10px;
 border:0;
 border-radius:8px;
 background:rgba(255,255,255,0.16);
@@ -284,8 +361,8 @@ pointer-events:none;
 
 #notif div{
 margin-top:6px;
-padding:8px 10px;
-background:rgba(0,0,0,0.7);
+padding:10px;
+background:rgba(0,0,0,0.75);
 border-radius:8px;
 }
 
@@ -300,6 +377,7 @@ align-items:center;
 justify-content:space-between;
 gap:10px;
 padding:10px;
+background:linear-gradient(rgba(40,0,50,0), rgba(40,0,50,0.86) 24%);
 }
 
 #version{
@@ -314,6 +392,7 @@ padding:10px;
 border-radius:8px;
 cursor:pointer;
 white-space:nowrap;
+box-shadow:0 2px 10px rgba(0,0,0,0.25);
 }
 
 /* VIDEOS */
@@ -336,14 +415,16 @@ background:linear-gradient(#4b0082,#800080);
 
 #ytSearch{
 width:67%;
-padding:6px;
+min-height:42px;
+padding:8px;
 border:none;
 border-radius:6px;
 }
 
 #ytBtn{
 width:30%;
-padding:6px;
+min-height:42px;
+padding:8px;
 border:none;
 border-radius:6px;
 background:magenta;
@@ -354,7 +435,7 @@ cursor:pointer;
 .ytItem{
 display:block;
 width:100%;
-padding:8px;
+padding:10px;
 border:0;
 border-bottom:1px solid rgba(255,255,255,0.3);
 background:transparent;

@@ -9,6 +9,9 @@ let alienCurrency = 0;
 let spins = 0;
 let spinning = false;
 let hasWon = false;
+let rainbowActive = false;
+let rainbowTimer = null;
+let rainbowDropActive = false;
 let romanceState = { step: 0, score: 0, finished: false, lastReward: 0, runs: 0 };
 
 const $ = (id) => document.getElementById(id);
@@ -813,6 +816,43 @@ function playVideo(video) {
   video.requestFullscreen?.();
 }
 
+function activateRainbowMode(drop) {
+  drop?.remove();
+  rainbowDropActive = false;
+  rainbowActive = true;
+  colon3 += 100000;
+  document.body.classList.add("rainbowMode");
+  notify("Rainbow mode +100,000 :3");
+  update();
+
+  clearTimeout(rainbowTimer);
+  rainbowTimer = setTimeout(() => {
+    rainbowActive = false;
+    document.body.classList.remove("rainbowMode");
+  }, 30000);
+}
+
+function spawnRainbowDrop() {
+  if (rainbowDropActive || rainbowActive) return;
+
+  rainbowDropActive = true;
+  const drop = document.createElement("button");
+  drop.className = "rainbowDrop";
+  drop.type = "button";
+  drop.setAttribute("aria-label", "Activate rainbow mode");
+  drop.style.left = `${10 + Math.random() * 75}%`;
+  drop.onclick = () => activateRainbowMode(drop);
+  drop.addEventListener("animationend", () => {
+    drop.remove();
+    rainbowDropActive = false;
+  }, { once: true });
+  document.body.appendChild(drop);
+}
+
+function maybeSpawnRainbowDrop() {
+  if (Math.random() < 0.08) spawnRainbowDrop();
+}
+
 function toggle(element) {
   if (!element) return;
   element.style.display = element.style.display === "block" ? "none" : "block";
@@ -865,3 +905,4 @@ setInterval(() => {
   colon3 += autoStrength;
   update();
 }, 1000);
+setInterval(maybeSpawnRainbowDrop, 15000);
