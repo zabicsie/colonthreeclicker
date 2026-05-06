@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>:3 Clicker</title>
+<link rel="icon" href="favicon.jpeg">
+<link rel="stylesheet" href="index.css">
+<style>
+@font-face{
+font-family:Playwrite;
+src:url("PlaywritePL-Thin.ttf");
+}
+</style>
+</head>
+<body>
+
+<!-- MENU BUTTONS -->
+<button id="menuBtn">&#9776;</button>
+<button id="gambleBtn">&#127922; Gambling</button>
+<button id="alienBtn">&#128125; Alien Shop</button>
+<button id="exchangeBtn">&#128260; Exchange</button>
+<button id="romanceBtn">romance :3</button>
+
+<!-- ACHIEVEMENTS -->
+<div id="dropdown">
+<h3>Achievements</h3>
+<div id="achList"></div>
+</div>
+
+<!-- GAMBLING MENU -->
+<div id="gambleMenu">
+<h3>Gambling</h3>
+<button id="spinBtn">SPIN (Cost: 1,000)</button>
+<div id="spinResult"></div>
+</div>
+
+<!-- ALIEN SHOP -->
+<div id="alienShop">
+<h3>Alien Shop</h3>
+<div id="alienItems"></div>
+</div>
+
+<!-- EXCHANGE MENU -->
+<div id="exchangeMenu">
+<h3>Exchange :3 &#8594; :P</h3>
+<div id="exchangeInfo">You have :P: 0</div>
+<input id="exchangeInput" type="number" min="10" placeholder="Amount of :3 to exchange">
+<button id="exchangeConfirm">Exchange</button>
+</div>
+
+<!-- ROMANCE MENU -->
+<div id="romanceMenu">
+<h3>romance :3</h3>
+<div id="romanceProgress"></div>
+<div id="romanceChat"></div>
+<div id="romanceOptions"></div>
+</div>
+
+<!-- NOTIFICATIONS -->
+<div id="notif"></div>
+
+<!-- GAME -->
+<div id="game">
+<div id="counter">:3 : 0</div>
+<div id="stats">
+<div>:3/sec: <span id="perSec">0</span></div>
+<div>:3/click: <span id="perClick">1</span></div>
+</div>
+<img id="colon3" src="colon3.png" alt=":3 click button">
+</div>
+
+<!-- SHOP -->
+<div id="shop"></div>
+
+<!-- YOUTUBE BUTTON -->
+<button id="ytToggle">&#128269; YT</button>
+
+<!-- YOUTUBE DROPDOWN -->
+<div id="ytDropdown">
+<div id="ytPlayer"></div>
+<input id="ytSearch" placeholder="Search YouTube or paste a video URL...">
+<button id="ytBtn">Search</button>
+<div id="ytResults"></div>
+</div>
+
+<!-- BOTTOM -->
+<div id="bottomBar">
+<button id="hateBtn">i dont like this game</button>
+<div id="version">:3 Clicker v6 Feature Fix</div>
+</div>
+
+<!-- VIDEOS -->
+<video id="rageVid" src="vid.mp4"></video>
+<video id="winVid" src="win.mp4"></video>
+
+<script src="index.js"></script>
+</body>
+</html>
